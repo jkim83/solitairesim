@@ -179,25 +179,36 @@ class Solitaire:
         elif target <= 11 and target >= 8:
             card = self.tableau[source-1].pop()
             self.piles[target].append(card)
-
         else:
             card = self.tableau[source-1].pop()
             self.tableau[target-1].append(card)
 
     
     def hitHand(self): #note: doesn't account for when there are less than 3 cards in the hand.
-        if not self.piles[12]: #if currently empty
+
+        if not self.hand: #nothing in hand; return all waste cards back to hand
+            while self.piles[12]:
+                card = self.piles[12].pop()
+                self.hand.append(card)
+
+        elif not self.piles[12]: #if currently empty
             for _ in range(3):
-                new_card = self.hand.pop()  # New card is the last card in the hand pile
-                new_card.flip()  # Flip the card to make it visible
-                self.piles[12].append(new_card)
+                if self.hand:
+                    new_card = self.hand.pop()  # New card is the last card in the hand pile
+                    new_card.flip()  # Flip the card to make it visible
+                    self.piles[12].append(new_card)
+                else:
+                    continue
         
         else:
             # Get three new cards to the waste
             for _ in range(3):
-                new_card = self.hand.pop()  # New card is the last card in the hand pile
-                new_card.flip()  # Flip the card to make it visible
-                self.piles[12].append(new_card)
+                if self.hand:
+                    new_card = self.hand.pop()  # New card is the last card in the hand pile
+                    new_card.flip()  # Flip the card to make it visible
+                    self.piles[12].append(new_card)
+                else:
+                    continue
         
     def setup_tableau(self):
         hand = []
